@@ -34,8 +34,10 @@ import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var arrayData: Array<String>
     private lateinit var mMap: GoogleMap
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -63,9 +65,13 @@ class MainActivity : AppCompatActivity() {
                     if (this.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(arrayData, 456)
 
+                    }else
+                    {
+                        showMapData()
                     }
                 } else {
                     TODO("VERSION.SDK_INT < M")
+                    showMapData()
                 }
 
 
@@ -112,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showMapData()
+    private fun showMapData()
     {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragment)
                 as SupportMapFragment
