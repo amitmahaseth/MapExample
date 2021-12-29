@@ -21,8 +21,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import java.util.jar.Manifest
 import android.content.IntentSender
 import android.content.IntentSender.SendIntentException
+import android.util.Log
+import com.example.mapexample.databinding.ActivityMainBinding
 
 import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.LocationRequest
 
 import com.google.android.gms.location.LocationSettingsResponse
@@ -30,21 +33,62 @@ import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import java.lang.Exception
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() ,OnMapReadyCallback{
 
     private lateinit var arrayData: Array<String>
     private lateinit var mMap: GoogleMap
+    private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding= ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        Places.initialize(getApplicationContext(), "AIzaSyDzWXXSTbALY_4iKkVY4ZMtUaZcsnh2dbA");
 
-        enableLocationSettings()
+        binding.btnSearch.setOnClickListener {
+            binding.sourceLocation.text.toString().trim()
+            binding.destinationLocation.text.toString().trim()
+
+            if (binding.sourceLocation.equals("") && binding.destinationLocation.equals("")){
+                Toast.makeText(this,"please enter both location",Toast.LENGTH_SHORT).show()
+            }else{
+
+            }
+        }
 
 
+
+
+        val autocompleteFragment =
+            supportFragmentManager.findFragmentById(R.id.autocomplete_fragment)
+                    as AutocompleteSupportFragment
+
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                // TODO: Get info about the selected place.
+                Log.d("Maps", "Place: "+ place.name)
+            }
+
+            override fun onError(status: Status) {
+                // TODO: Handle the error.
+                Log.d("Maps", "An error occurred: $status")
+            }
+        })
+       showMapData()
     }
 
     protected fun enableLocationSettings() {
@@ -142,4 +186,10 @@ class MainActivity : AppCompatActivity() {
         })
 
     }
+
+    override fun onMapReady(p0: GoogleMap) {
+        mMap=p0
+    }
+
+
 }
