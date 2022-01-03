@@ -14,36 +14,39 @@
         android:hint="Enter Source Location"
         android:padding="8dp" />
 
-    <EditText
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <EditText
         android:id="@+id/destination_location"
-        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="Enter destination Location"
-        />
+        android:padding="8dp" />
 
     <Button
+        android:id="@+id/btn_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_search"
         android:layout_marginTop="20dp"
-        android:text="Search"/>
+        android:text="Search" />
 
 
     <fragment
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/autocomplete_fragment"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/mapFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>
